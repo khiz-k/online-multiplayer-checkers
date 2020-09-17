@@ -15,6 +15,8 @@ const joinGameFactory = require("./handlers/joinGameFactory");
 
 const sendGames = require("./helpers/sendGames");
 
+app.get("/", (req, res) => res.status(200).send("hello world"));
+
 io.on("connection", (socket) => {
   sendGames(socket);
 
