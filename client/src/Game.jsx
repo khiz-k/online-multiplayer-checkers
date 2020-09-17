@@ -1,30 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Spinner from 'react-bootstrap/Spinner';
-import classNames from 'classnames';
-
-import './Game.css';
+import React, { useEffect, useState } from "react";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Spinner from "react-bootstrap/Spinner";
+import classNames from "classnames";
 
 const colorMap = {
-  0: 'empty',
-  1: 'red',
-  2: 'black',
-  3: 'red',
-  4: 'black',
+  0: "empty",
+  1: "red",
+  2: "black",
+  3: "red",
+  4: "black",
 };
 
-export default function Game({
-  leaveGame,
-  movePiece,
-  game,
-  color,
-  sendChat,
-}) {
+export default function Game({ leaveGame, movePiece, game, color }) {
   const [selectedPiece, setSelectedPiece] = useState({});
-  const [chatText, setChatText] = useState('');
 
   useEffect(() => {
     return () => leaveGame();
@@ -54,8 +45,7 @@ export default function Game({
     return selectedPiece.i === i && selectedPiece.j === j;
   };
 
-  const getColor = (piece) =>
-    piece === 1 ? 'red' : 'black';
+  const getColor = (piece) => (piece === 1 ? "red" : "black");
 
   const renderBoard = () => {
     return (
@@ -65,7 +55,7 @@ export default function Game({
             {row.map((piece, j) => (
               <div
                 key={`${i} ${j}`}
-                className={classNames('cell', {
+                className={classNames("cell", {
                   gray: (i + j) % 2 === 0,
                   white: (i + j) % 2 !== 0,
                 })}
@@ -73,7 +63,7 @@ export default function Game({
               >
                 {piece !== 0 && (
                   <div
-                    className={classNames('piece', {
+                    className={classNames("piece", {
                       selected: isPieceSelected(i, j),
                       red: piece === 1,
                       black: piece === 2,
@@ -92,74 +82,37 @@ export default function Game({
     );
   };
 
-  const renderChat = () => {
-    return (
-      <div>
-        <h2>Game Chat</h2>
-        {game.chat &&
-          game.chat.map((message, idx) => (
-            <div key={idx}>{message}</div>
-          ))}
-        <div className="chat-input-wrapper">
-          <Form.Control
-            type="text"
-            value={chatText}
-            onChange={(e) => setChatText(e.target.value)}
-            placeholder="Enter your chat here"
-          />
-          <Button
-            className="chat-button"
-            variant="primary"
-            onClick={() => {
-              sendChat(chatText);
-              setChatText('');
-            }}
-          >
-            Send
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
   const isGameStarted = () => game.numberOfPlayers === 2;
 
   const renderWaiting = () => {
     return (
-      <Col>
-        <div className="text-center">
-          <h2 className="mb-4">{game.name}</h2>
-          <div className="mb-4">
-            <Spinner animation="border" role="status" />
-          </div>
-          <span>Waiting for an opponent....</span>
+      <div className="center">
+        <h2 className="mb-4">{game.name}</h2>
+        <div className="mb-4">
+          <Spinner animation="border" role="status" />
         </div>
-      </Col>
+        <span>Waiting for an opponent....</span>
+      </div>
     );
   };
 
   const renderGame = () => {
     return (
       <>
-        <Col>
-          <div>Your piece color is {color}</div>
-          {game.turn === color && (
-            <div>It is your turn!</div>
-          )}
-          {game.turn !== color && (
-            <div>Waiting for opponent!</div>
-          )}
-          {renderBoard()}
-        </Col>
-        <Col>{renderChat()}</Col>
+        <div className="game__info">
+          <h2>Your piece color is {color}</h2>
+          {game.turn === color && <h3>It is your turn!</h3>}
+          {game.turn !== color && <h3>Waiting for opponent!</h3>}
+        </div>
+        {renderBoard()}
       </>
     );
   };
 
   return (
-    <Row>
+    <div className="center">
       {!isGameStarted() && renderWaiting()}
       {isGameStarted() && renderGame()}
-    </Row>
+    </div>
   );
 }

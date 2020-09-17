@@ -1,19 +1,12 @@
-import React from 'react';
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
+import React from "react";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 
-export default function Lobby({
-  setPage,
-  joinGame,
-  games,
-}) {
+export default function Lobby({ setPage, joinGame, games }) {
   return (
-    <div className="lobby">
+    <div className="game">
       <div className="mb-4">
-        <Button
-          variant="primary"
-          onClick={() => setPage('CreateNewGame')}
-        >
+        <Button variant="primary" onClick={() => setPage("CreateNewGame")}>
           Create New Game
         </Button>
       </div>
@@ -26,20 +19,13 @@ export default function Lobby({
           </tr>
         </thead>
         <tbody>
-          {games.length === 0 && (
-            <tr>
-              <td colSpan="3">No games created yet</td>
-            </tr>
-          )}
+          {games.length === 0 && <tr></tr>}
           {games.map((game) => (
             <tr key={game.name}>
               <td>{game.name}</td>
               <td>{game.numberOfPlayers} / 2</td>
               <td>
-                <Button
-                  onClick={() => joinGame(game.id)}
-                  variant="link"
-                >
+                <Button onClick={() => joinGame(game.id)} variant="link">
                   Join Game
                 </Button>
               </td>
